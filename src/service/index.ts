@@ -1,5 +1,4 @@
 // 创建FTRequest类实例，导出
-// import { InternalAxiosRequestConfig } from 'axios'
 import FTRequest from './request'
 
 const ftRequest = new FTRequest({

@@ -4,20 +4,26 @@
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
+    "importHelpers": true,
     "moduleResolution": "node",
+    // 跳过库的类型检测 如lodash ->@types/lodash 建议开启
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": true,
+    // 要不要生成映射文件 ts -> js
     "sourceMap": true,
     "baseUrl": ".",
     "types": ["webpack-env"],
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "components/*": ["src/components/*"]
     },
+    // 可以指定在项目中可以使用的类型
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
+  // 那些代码需要经过编译解析的
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
