@@ -1,15 +1,21 @@
 // 创建FTRequest类实例，导出
 import FTRequest from './request'
+import { BASE_URL, TIME_OUT } from './request/config'
+import localCache from '@/utils/cache'
 
 const ftRequest = new FTRequest({
-  baseURL: process.env.VUE_APP_BASE_URL,
-  timeout: 5000,
+  baseURL: BASE_URL,
+  timeout: TIME_OUT,
   // 这个请求实例可以传拦截器
   interceptors: {
     requestInterceptor: (config) => {
-      console.log('实例单独响应')
+      const token = localCache.getCache('token')
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
       return config
     }
   }
 })
+
 export default ftRequest

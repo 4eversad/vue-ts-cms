@@ -8,7 +8,7 @@ import type {
 export interface FTRequestInterceptor {
   // 请求拦截
   requestInterceptor?: (
-    config: InternalAxiosRequestConfig | FTRequestConfig
+    config: InternalAxiosRequestConfig | any
     // 这个地方类型实在匹配不上,只好用any
   ) => InternalAxiosRequestConfig | any
 

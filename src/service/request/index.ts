@@ -1,3 +1,4 @@
+// 封装请求 类
 import axios from 'axios'
 import type { AxiosInstance } from 'axios'
 import type { FTRequestInterceptor, FTRequestConfig, FTConfig } from './type'
@@ -15,7 +16,6 @@ class FTRequest {
     this.loadingInstance = null
     // 默认给一个true
     this.showLoading = DEFAULT_LOADING
-    console.log(this.showLoading)
 
     this.instance.interceptors.request.use(
       this.interceptors?.requestInterceptor,
@@ -30,8 +30,6 @@ class FTRequest {
     // 全局拦截器,所有实例拦截器, 可以过滤data
     this.instance.interceptors.request.use(
       (config) => {
-        console.log('全局拦截')
-        // console.log(this.showLoading)
         if (this.showLoading) {
           this.loadingInstance = ElLoading.service({
             lock: true,
@@ -51,7 +49,6 @@ class FTRequest {
       (res) => {
         this.loadingInstance?.close()
 
-        console.log('实例共有响应拦截器')
         return res.data
       },
       (err) => {
@@ -65,7 +62,6 @@ class FTRequest {
   request<T>(config: FTRequestConfig): Promise<T> {
     return new Promise((resolve, reject) => {
       this.showLoading = config.showLoading ?? DEFAULT_LOADING
-      console.log('request中的showLoading: ' + this.showLoading)
       // 请求的拦截
       // 如果单个请求有拦截, 那就先对config进行操作,
       // 再发请求
@@ -81,7 +77,6 @@ class FTRequest {
             res = config.interceptors.responseInterceptor(res)
           }
           resolve(res)
-          console.log(res)
         })
         .catch((err) => {
           reject(err)
