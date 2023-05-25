@@ -8,6 +8,7 @@ import {
 } from '@/service/login/login'
 import localCache from '@/utils/cache'
 import router from '@/router/index'
+import { mapMenusToRoutes } from '@/utils/map-menu'
 
 // 泛型需要两个类型,一个是自己的state的类型, 一个是根state的类型
 const loginModule: Module<ILoginState, IRootState> = {
@@ -16,7 +17,7 @@ const loginModule: Module<ILoginState, IRootState> = {
     return {
       token: '',
       userInfo: {},
-      userMenu: []
+      userMenus: []
     }
   },
   getters: {},
@@ -27,8 +28,14 @@ const loginModule: Module<ILoginState, IRootState> = {
     changeUserInfo(state, userInfo: any) {
       state.userInfo = userInfo
     },
-    changeUserMenus(state, userMenu: any) {
-      state.userMenu = userMenu
+    changeUserMenus(state, userMenus: any) {
+      state.userMenus = userMenus
+      // 注册路由
+      const routes = mapMenusToRoutes(userMenus)
+      routes.forEach((item) => {
+        router.addRoute('main', item)
+      })
+      console.log(router.getRoutes())
     }
   },
   actions: {
@@ -47,6 +54,7 @@ const loginModule: Module<ILoginState, IRootState> = {
 
       // 根据用户id请求不同的首页菜单
       const UserMenusResult = await requestUserMenusById(userInfo.role.id)
+
       const userMenus = UserMenusResult.data
       localCache.setCache('userMenus', userMenus)
 
@@ -65,7 +73,7 @@ const loginModule: Module<ILoginState, IRootState> = {
       if (userInfo) {
         commit('changeUserInfo', userInfo)
       }
-      const userMenus = localCache.getCache('userMenu')
+      const userMenus = localCache.getCache('userMenus')
       if (userMenus) {
         commit('changeUserMenus', userMenus)
       }

@@ -8,11 +8,19 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/login',
+    name: 'login',
     component: () => import('@/views/login/Login.vue')
   },
   {
     path: '/main',
-    component: () => import('@/views/main/Main.vue')
+    name: 'main',
+    component: () => import('@/views/main/Main.vue'),
+    children: []
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import('@/views/not-found/not-found.vue')
   }
 ]
 
@@ -22,6 +30,8 @@ const router = createRouter({
 })
 
 router.beforeEach(function (to, from, next) {
+  console.log('路由守卫')
+
   if (to.path != '/login') {
     const token = localCache.getCache('token')
     if (!token) {

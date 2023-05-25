@@ -1,7 +1,7 @@
 export interface ILoginState {
   token: string
   userInfo: any
-  userMenu: any
+  userMenus: any
 }
 export interface ILoginResult {
   id: number
