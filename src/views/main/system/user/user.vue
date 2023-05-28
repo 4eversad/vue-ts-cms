@@ -1,21 +1,26 @@
 <template>
   <div class="user">
-    <div class="search">
-      <FTForm v-bind="searchFormConfig"> </FTForm>
-    </div>
+    <pageSearch :searchFormConfig="searchFormConfig"></pageSearch>
     <div class="content"></div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import FTForm from '@/base-ui/form'
-import { searchFormConfig } from './config/user.config'
+import { defineComponent, ref } from 'vue'
+import pageSearch from '@/components/page-search'
+import { searchFormConfig } from './config/search.config'
 export default defineComponent({
   name: 'user',
-  components: { FTForm },
+  components: { pageSearch },
   setup() {
-    return { searchFormConfig }
+    const formData = ref({
+      id: '',
+      name: '',
+      password: '',
+      sport: '',
+      createTime: ''
+    })
+    return { searchFormConfig, formData }
   }
 })
 </script>

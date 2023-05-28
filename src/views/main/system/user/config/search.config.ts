@@ -6,18 +6,28 @@ export const searchFormConfig: IForm = {
   },
   formItems: [
     {
+      field: 'id',
+      label: 'id',
+      rules: [],
+      placeholder: '请输入',
+      type: 'input'
+    },
+    {
+      field: 'name',
       label: '用户名',
       rules: [],
       placeholder: '请输入',
       type: 'input'
     },
     {
+      field: 'password',
       label: '密码',
       rules: [],
       placeholder: '请输入',
       type: 'password'
     },
     {
+      field: 'sport',
       label: '爱好',
       rules: [],
       placeholder: '请输入',
@@ -28,6 +38,7 @@ export const searchFormConfig: IForm = {
       ]
     },
     {
+      field: 'createTime',
       label: '创建时间',
       rules: [],
       placeholder: '请输入',

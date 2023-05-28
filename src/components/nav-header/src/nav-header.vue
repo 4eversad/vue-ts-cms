@@ -11,26 +11,40 @@
     </el-icon>
     <div class="content">
       <!-- 面包屑 -->
-      <div>面包屑</div>
+      <nav-breadcrumb :breadcrumbs="breadcrumbs"></nav-breadcrumb>
       <UserInfo></UserInfo>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import UserInfo from './userInfo.vue'
+import navBreadcrumb from '@/base-ui/breadcrumb/index'
+import { pathMapBreadCrumb } from '@/utils/map-menu'
+import { useStore } from '@/store'
+import { useRoute } from 'vue-router'
+
 export default defineComponent({
   emits: ['foldChange'],
+  components: { UserInfo, navBreadcrumb },
   setup(props, { emit }) {
     const isFold = ref<boolean>(false)
+    const store = useStore()
+
     const handleFoldClick = () => {
       isFold.value = !isFold.value
       emit('foldChange', isFold.value)
     }
-    return { handleFoldClick, isFold }
-  },
-  components: { UserInfo }
+    const breadcrumbs = computed(() => {
+      const route = useRoute()
+      const currentPath = route.path
+      const userMenus = store.state.loginModule.userMenus
+      return pathMapBreadCrumb(userMenus, currentPath)
+    })
+
+    return { handleFoldClick, isFold, breadcrumbs }
+  }
 })
 </script>
 <style lang="less" scoped>

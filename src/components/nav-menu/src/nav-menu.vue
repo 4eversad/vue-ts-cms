@@ -9,6 +9,7 @@
       @open="handleOpen"
       @close="handleClose"
       :collapse="isCollapse"
+      :default-active="defaultValue"
     >
       <!-- 第一个大类 -->
       <template v-for="item in userMenus" :key="item.id">
@@ -51,9 +52,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import { useStore } from '@/store'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { pathMapToMenu } from '@/utils/map-menu'
 
 export default defineComponent({
   props: {
@@ -64,7 +66,20 @@ export default defineComponent({
   },
   components: {},
   setup() {
+    //router
     const router = useRouter()
+    const route = useRoute()
+    const currrentPath = route.path
+
+    // store
+    const store = useStore()
+    const userMenus = computed(() => {
+      return store.state.loginModule.userMenus
+    })
+
+    // data
+    const menu = pathMapToMenu(userMenus.value, currrentPath)
+    const defaultValue = ref(menu.id + '')
 
     const handleOpen = (key: string, keyPath: string[]) => {
       console.log(key, keyPath)
@@ -72,10 +87,6 @@ export default defineComponent({
     const handleClose = (key: string, keyPath: string[]) => {
       console.log(key, keyPath)
     }
-    const store = useStore()
-    const userMenus = computed(() => {
-      return store.state.loginModule.userMenus
-    })
     const handleMenuClick = (item: any) => {
       console.log(item.url)
 
@@ -84,7 +95,14 @@ export default defineComponent({
         path: item.url
       })
     }
-    return { store, userMenus, handleOpen, handleClose, handleMenuClick }
+    return {
+      store,
+      userMenus,
+      handleOpen,
+      handleClose,
+      defaultValue,
+      handleMenuClick
+    }
   }
 })
 </script>
