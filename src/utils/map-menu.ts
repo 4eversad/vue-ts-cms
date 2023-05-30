@@ -1,6 +1,7 @@
 import { RouteRecordRaw } from 'vue-router'
 import { IBreadcrumb } from '@/base-ui/breadcrumb'
 let firstMenu: any = null
+
 export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
   const routes: RouteRecordRaw[] = []
   const allRoutes: RouteRecordRaw[] = []

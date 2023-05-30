@@ -59,7 +59,7 @@ class FTRequest {
   }
   // request类型上必须有interceptors属性,
   // 只能是 FTRequestConfig
-  request<T>(config: FTRequestConfig): Promise<T> {
+  request<T = any>(config: FTRequestConfig): Promise<T> {
     return new Promise((resolve, reject) => {
       this.showLoading = config.showLoading ?? DEFAULT_LOADING
       // 请求的拦截
@@ -85,16 +85,16 @@ class FTRequest {
     })
   }
 
-  get<T>(config: FTRequestConfig): Promise<T> {
+  get<T = any>(config: FTRequestConfig): Promise<T> {
     return this.request<T>({ ...config, method: 'GET' })
   }
-  post<T>(config: FTRequestConfig): Promise<T> {
+  post<T = any>(config: FTRequestConfig): Promise<T> {
     return this.request<T>({ ...config, method: 'POST' })
   }
-  delete<T>(config: FTRequestConfig): Promise<T> {
+  delete<T = any>(config: FTRequestConfig): Promise<T> {
     return this.request<T>({ ...config, method: 'DELETE' })
   }
-  patch<T>(config: FTRequestConfig): Promise<T> {
+  patch<T = any>(config: FTRequestConfig): Promise<T> {
     return this.request<T>({ ...config, method: 'PATCH' })
   }
 }

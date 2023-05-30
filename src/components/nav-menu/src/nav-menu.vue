@@ -6,8 +6,6 @@
     </div>
     <el-menu
       class="el-menu-vertical"
-      @open="handleOpen"
-      @close="handleClose"
       :collapse="isCollapse"
       :default-active="defaultValue"
     >
@@ -81,16 +79,7 @@ export default defineComponent({
     const menu = pathMapToMenu(userMenus.value, currrentPath)
     const defaultValue = ref(menu.id + '')
 
-    const handleOpen = (key: string, keyPath: string[]) => {
-      console.log(key, keyPath)
-    }
-    const handleClose = (key: string, keyPath: string[]) => {
-      console.log(key, keyPath)
-    }
     const handleMenuClick = (item: any) => {
-      console.log(item.url)
-
-      console.log(item)
       router.push({
         path: item.url
       })
@@ -98,8 +87,6 @@ export default defineComponent({
     return {
       store,
       userMenus,
-      handleOpen,
-      handleClose,
       defaultValue,
       handleMenuClick
     }

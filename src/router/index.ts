@@ -31,8 +31,6 @@ const router = createRouter({
 })
 
 router.beforeEach(function (to) {
-  console.log('路由守卫')
-
   if (to.path != '/login') {
     const token = localCache.getCache('token')
     if (!token) {
@@ -42,6 +40,5 @@ router.beforeEach(function (to) {
   if (to.path === '/main') {
     return firstMenu.url
   }
-  // next()
 })
 export default router

@@ -1,7 +1,8 @@
 // 导出登录时需要的请求
 import ftRequest from '../index'
 import { IAccount } from './types'
-import { IDataType, ILoginResult } from '@/store/login/types'
+import { ILoginResult } from '@/store/login/types'
+import { IDataType } from '@/service/types'
 enum LoginAPI {
   AccountLogin = '/login',
   LoginUserInfo = '/users/',

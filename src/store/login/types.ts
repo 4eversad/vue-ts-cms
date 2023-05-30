@@ -11,7 +11,3 @@ export interface ILoginResult {
 export interface IUserData {
   id: string
 }
-export interface IDataType<T = any> {
-  code: number
-  data: T
-}
