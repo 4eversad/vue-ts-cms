@@ -28,7 +28,6 @@ export default defineComponent({
     const isCollapse = ref<boolean>(false)
     const handleFoldChange = (isFold: boolean) => {
       isCollapse.value = isFold
-      console.log(isCollapse.value)
     }
     return { handleFoldChange, isCollapse }
   }

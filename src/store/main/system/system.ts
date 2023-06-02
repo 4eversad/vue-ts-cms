@@ -23,6 +23,11 @@ const systemModule: Module<ISystemState, IRootState> = {
             return state.roleList
         }
       }
+    },
+    pageListCount(state) {
+      return (pageName: string) => {
+        return (state as any)[`${pageName}Count`]
+      }
     }
   },
   mutations: {
@@ -42,10 +47,6 @@ const systemModule: Module<ISystemState, IRootState> = {
   actions: {
     async getPageListAction({ commit }, payload: any) {
       // 获取pageURL
-      console.log('执行getPageListAction')
-
-      console.log(payload)
-
       const pageName = payload.pageName
       // 对页面发送请求
       let pageUrl = ''
@@ -58,8 +59,6 @@ const systemModule: Module<ISystemState, IRootState> = {
           break
       }
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
-      console.log('url' + pageUrl)
-
       console.log(pageResult)
 
       const { list, totalCount } = pageResult.data

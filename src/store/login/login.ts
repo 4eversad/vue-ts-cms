@@ -35,7 +35,6 @@ const loginModule: Module<ILoginState, IRootState> = {
       routes.forEach((item) => {
         router.addRoute('main', item)
       })
-      console.log(router.getRoutes())
     }
   },
   actions: {
@@ -62,7 +61,6 @@ const loginModule: Module<ILoginState, IRootState> = {
 
       // 跳至首页
       router.push('/main')
-      console.log(userMenus)
     },
     loadLocalLogin({ commit }) {
       const token = localCache.getCache('token')

@@ -1,6 +1,11 @@
 <template>
   <div class="page-content">
-    <FTTable :listData="userList" v-bind="contentTableConfig">
+    <FTTable
+      :listData="userList"
+      :listCount="dataCount"
+      v-bind="contentTableConfig"
+      v-model:page="pageInfo"
+    >
       <template #headerHandler>
         <el-button type="primary" size="default" icon="plus"
           >新建用户</el-button
@@ -35,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref, watch } from 'vue'
 import { formatTime } from '@/utils/formatTime'
 import FTTable from '@/base-ui/table'
 
@@ -53,25 +58,37 @@ export default defineComponent({
   },
   components: { FTTable },
   setup(props) {
-    console.log(props.contentTableConfig)
-
     const store = useStore()
     const userList = computed(() =>
       store.getters['systemModule/pageListData'](props.pageName)
     )
-    const userCount = computed(() => store.state.systemModule.userCount)
-
-    store.dispatch('systemModule/getPageListAction', {
-      pageName: props.pageName,
-      queryInfo: {
-        offset: 0,
-        size: 10
-      }
+    const dataCount = computed(() =>
+      store.getters['systemModule/pageListCount'](props.pageName)
+    )
+    // 双向绑定pageInfo
+    const pageInfo = ref({ currentPage: 0, pageSize: 10 })
+    watch(pageInfo, () => {
+      getPageData()
     })
+    // 发送网络请求
+    const getPageData = (query: any = {}) => {
+      store.dispatch('systemModule/getPageListAction', {
+        pageName: props.pageName,
+        queryInfo: {
+          offset: pageInfo.value.currentPage * pageInfo.value.pageSize,
+          size: pageInfo.value.pageSize,
+          ...query
+        }
+      })
+    }
+    getPageData()
+
     return {
       formatTime,
       userList,
-      userCount
+      dataCount,
+      getPageData,
+      pageInfo
     }
   }
 })

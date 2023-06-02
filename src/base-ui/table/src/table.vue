@@ -49,11 +49,11 @@
         <el-pagination
           @current-change="handleCurrentChange"
           @size-change="handleSizeChange"
-          v-model:current-page="currentPage4"
-          v-model:page-size="pageSize4"
-          :page-sizes="[100, 200, 300, 400]"
+          :current-page="page.currentPage"
+          :page-size="page.pageSize"
+          :page-sizes="[10, 20, 30]"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          :total="listCount"
         />
       </slot>
     </div>
@@ -61,7 +61,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
 export default defineComponent({
   props: {
     listData: {
@@ -83,31 +83,34 @@ export default defineComponent({
     title: {
       type: String,
       default: ''
+    },
+    listCount: {
+      type: Number,
+      default: 0
+    },
+    page: {
+      type: Object,
+      default: () => ({ currentPage: 0, pageSize: 10 })
     }
   },
   emitd: ['selectionChange'],
   setup(props, { emit }) {
-    const currentPage4 = ref(4)
-    const pageSize4 = ref(4)
-    console.log(props.propList)
     const handleSelectionChange = (value: any) => {
-      console.log(value)
       emit('selectionChange', value)
     }
-
-    const handleSizeChange = (val: number) => {
-      console.log(`${val} items per page`)
+    // 当前页改变
+    const handleCurrentChange = (currentPage: number) => {
+      emit('update:page', { ...props.page, currentPage })
     }
-    const handleCurrentChange = (val: number) => {
-      console.log(`current page: ${val}`)
+    // 选择每页条数范围
+    const handleSizeChange = (pageSize: number) => {
+      emit('update:page', { ...props.page, pageSize })
     }
 
     return {
       handleSelectionChange,
       handleSizeChange,
-      handleCurrentChange,
-      currentPage4,
-      pageSize4
+      handleCurrentChange
     }
   }
 })

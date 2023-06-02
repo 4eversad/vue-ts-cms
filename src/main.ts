@@ -20,5 +20,3 @@ app.use(ElementPlus)
 setupStore()
 app.use(router)
 app.mount('#app')
-
-console.log(app.config)
