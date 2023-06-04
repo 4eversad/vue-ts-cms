@@ -13,6 +13,7 @@
       border
       @selection-change="handleSelectionChange"
       style="width: 100%"
+      v-bind="childrenProps"
     >
       <!-- 是否要选中列 -->
       <el-table-column
@@ -35,6 +36,7 @@
           v-bind="propItem"
           align="center"
           :min-width="propItem.minWidth"
+          show-overflow-tooltip
         >
           <template #default="scope">
             <slot :name="propItem.slotName" :row="scope.row">
@@ -44,7 +46,7 @@
         </el-table-column>
       </template>
     </el-table>
-    <div class="table-footer">
+    <div class="table-footer" v-if="ShowFooter">
       <slot name="tableFooter">
         <el-pagination
           @current-change="handleCurrentChange"
@@ -91,10 +93,20 @@ export default defineComponent({
     page: {
       type: Object,
       default: () => ({ currentPage: 0, pageSize: 10 })
+    },
+    childrenProps: {
+      type: Object,
+      default: () => ({})
+    },
+    ShowFooter: {
+      type: Boolean,
+      default: true
     }
   },
   emitd: ['selectionChange'],
   setup(props, { emit }) {
+    console.log(props.ShowFooter)
+
     const handleSelectionChange = (value: any) => {
       emit('selectionChange', value)
     }

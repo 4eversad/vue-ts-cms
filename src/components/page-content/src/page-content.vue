@@ -7,7 +7,7 @@
       v-model:page="pageInfo"
     >
       <template #headerHandler>
-        <el-button type="primary" size="default" icon="plus"
+        <el-button v-if="isCreate" type="primary" size="default" icon="plus"
           >新建用户</el-button
         >
       </template>
@@ -27,13 +27,33 @@
       </template>
       <template #handler>
         <div class="handler-btns">
-          <el-button size="small" type="primary" link icon="edit"
+          <el-button
+            v-if="isUpdate"
+            size="small"
+            type="primary"
+            link
+            icon="edit"
             >编辑</el-button
           >
-          <el-button size="small" type="danger" link icon="remove"
+          <el-button
+            v-if="isDelete"
+            size="small"
+            type="danger"
+            link
+            icon="remove"
             >删除</el-button
           >
         </div>
+      </template>
+      <!-- 动态插槽 -->
+      <template
+        v-for="item in otherPropsSlots"
+        :key="item.prop"
+        #[item.slotName]="scope"
+      >
+        <template v-if="item.slotName">
+          <slot :name="item.slotName" :row="scope.row"></slot>
+        </template>
       </template>
     </FTTable>
   </div>
@@ -43,6 +63,7 @@
 import { defineComponent, computed, ref, watch } from 'vue'
 import { formatTime } from '@/utils/formatTime'
 import FTTable from '@/base-ui/table'
+import { usePermission } from '@/hooks/usePermission'
 
 import { useStore } from '@/store'
 export default defineComponent({
@@ -59,6 +80,13 @@ export default defineComponent({
   components: { FTTable },
   setup(props) {
     const store = useStore()
+
+    // 获取操作权限
+    const isCreate = usePermission(props.pageName, 'create')
+    const isUpdate = usePermission(props.pageName, 'uodate')
+    const isDelete = usePermission(props.pageName, 'delete')
+    const isQuery = usePermission(props.pageName, 'query')
+
     const userList = computed(() =>
       store.getters['systemModule/pageListData'](props.pageName)
     )
@@ -70,8 +98,9 @@ export default defineComponent({
     watch(pageInfo, () => {
       getPageData()
     })
-    // 发送网络请求
+    // 查询-发送网络请求
     const getPageData = (query: any = {}) => {
+      if (!isQuery) return
       store.dispatch('systemModule/getPageListAction', {
         pageName: props.pageName,
         queryInfo: {
@@ -82,13 +111,27 @@ export default defineComponent({
       })
     }
     getPageData()
+    // 4.获取其他动态插槽名称
+    const otherPropsSlots = props.contentTableConfig?.propList.filter(
+      (item: any) => {
+        if (item.slotName === 'status') return false
+        if (item.slotName === 'createAt') return false
+        if (item.slotName === 'updateAt') return false
+        if (item.slotName === 'handler') return false
+        return true
+      }
+    )
 
     return {
       formatTime,
       userList,
       dataCount,
       getPageData,
-      pageInfo
+      pageInfo,
+      otherPropsSlots,
+      isCreate,
+      isUpdate,
+      isDelete
     }
   }
 })
@@ -97,5 +140,8 @@ export default defineComponent({
 .page-content {
   padding: 20px;
   border-top: 20px solid #f5f5f5;
+}
+.el-image-viewer__canvas {
+  z-index: 10;
 }
 </style>

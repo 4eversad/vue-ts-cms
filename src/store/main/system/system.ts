@@ -7,20 +7,28 @@ const systemModule: Module<ISystemState, IRootState> = {
   namespaced: true,
   state() {
     return {
-      userList: [],
-      userCount: 0,
+      usersList: [],
+      usersCount: 0,
       roleList: [],
-      roleCount: 0
+      roleCount: 0,
+      goodsList: [],
+      goodsCount: 0,
+      menuList: [],
+      menuCount: 0
     }
   },
   getters: {
     pageListData(state) {
       return (pageName: string) => {
         switch (pageName) {
-          case 'user':
-            return state.userList
+          case 'users':
+            return state.usersList
           case 'role':
             return state.roleList
+          case 'goods':
+            return state.goodsList
+          case 'menu':
+            return state.menuList
         }
       }
     },
@@ -31,17 +39,29 @@ const systemModule: Module<ISystemState, IRootState> = {
     }
   },
   mutations: {
-    changeUserList(state, userList: any[]) {
-      state.userList = userList
+    changeUsersList(state, usersList: any[]) {
+      state.usersList = usersList
     },
-    changeUserCount(state, userCount: number) {
-      state.userCount = userCount
+    changeUsersCount(state, usersCount: number) {
+      state.usersCount = usersCount
     },
     changeRoleList(state, roleList: any[]) {
       state.roleList = roleList
     },
     changeRoleCount(state, roleCount: number) {
       state.roleCount = roleCount
+    },
+    changeGoodsList(state, goodsList: any[]) {
+      state.goodsList = goodsList
+    },
+    changeGoodsCount(state, goodsCount: number) {
+      state.goodsCount = goodsCount
+    },
+    changeMenuList(state, menuList: any[]) {
+      state.menuList = menuList
+    },
+    changeMenuCount(state, menuCount: number) {
+      state.menuCount = menuCount
     }
   },
   actions: {
@@ -51,27 +71,37 @@ const systemModule: Module<ISystemState, IRootState> = {
       // 对页面发送请求
       let pageUrl = ''
       switch (pageName) {
-        case 'user':
+        case 'users':
           pageUrl = 'users/list'
           break
         case 'role':
           pageUrl = 'role/list'
           break
+        case 'goods':
+          pageUrl = 'goods/list'
+          break
+        case 'menu':
+          pageUrl = 'menu/list'
+          break
       }
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
-      console.log(pageResult)
 
       const { list, totalCount } = pageResult.data
-      switch (pageName) {
-        case 'user':
-          commit(`changeUserList`, list)
-          commit(`changeUserCount`, totalCount)
-          break
-        case 'role':
-          commit(`changeRoleList`, list)
-          commit(`changeRoleCount`, totalCount)
-          break
-      }
+      const changePageName =
+        pageName.slice(0, 1).toUpperCase() + pageName.slice(1)
+      commit(`change${changePageName}List`, list)
+      commit(`change${changePageName}Count`, totalCount)
+
+      // switch (pageName) {
+      //   case 'user':
+      //     commit(`changeUserList`, list)
+      //     commit(`changeUserCount`, totalCount)
+      //     break
+      //   case 'role':
+      //     commit(`changeRoleList`, list)
+      //     commit(`changeRoleCount`, totalCount)
+      //     break
+      // }
     }
   }
 }

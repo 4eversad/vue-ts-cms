@@ -7,7 +7,7 @@
     ></pageSearch>
     <pageContent
       ref="pageContentRef"
-      pageName="user"
+      pageName="users"
       :contentTableConfig="contentTableConfig"
     ></pageContent>
   </div>
@@ -21,7 +21,7 @@ import pageSearch from '@/components/page-search'
 import pageContent from '@/components/page-content'
 import { usePageSearch } from '@/hooks/usePageSearch'
 export default defineComponent({
-  name: 'user',
+  name: 'users',
   components: { pageSearch, pageContent },
   setup() {
     const [pageContentRef, handleResetClick, handleQueryClick] =
