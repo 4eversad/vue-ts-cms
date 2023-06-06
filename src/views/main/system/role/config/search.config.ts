@@ -21,7 +21,7 @@ export const searchFormConfig: IForm = {
     },
 
     {
-      field: 'createTime',
+      field: 'createAt',
       label: '创建时间',
       rules: [],
       placeholder: '请输入',

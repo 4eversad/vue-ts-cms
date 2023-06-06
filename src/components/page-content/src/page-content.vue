@@ -7,7 +7,12 @@
       v-model:page="pageInfo"
     >
       <template #headerHandler>
-        <el-button v-if="isCreate" type="primary" size="default" icon="plus"
+        <el-button
+          @click="handleNewClick"
+          v-if="isCreate"
+          type="primary"
+          size="default"
+          icon="plus"
           >新建用户</el-button
         >
       </template>
@@ -25,7 +30,7 @@
       <template #updateAt="scope">
         <span> {{ formatTime(scope.row.updateAt) }}</span>
       </template>
-      <template #handler>
+      <template #handler="scope">
         <div class="handler-btns">
           <el-button
             v-if="isUpdate"
@@ -33,6 +38,7 @@
             type="primary"
             link
             icon="edit"
+            @click="handleEditClick(scope.row)"
             >编辑</el-button
           >
           <el-button
@@ -41,6 +47,7 @@
             type="danger"
             link
             icon="remove"
+            @click="handleDeleteClick(scope.row)"
             >删除</el-button
           >
         </div>
@@ -78,12 +85,13 @@ export default defineComponent({
     }
   },
   components: { FTTable },
-  setup(props) {
+  emits: ['newBtnClick', 'editBtnClick'],
+  setup(props, { emit }) {
     const store = useStore()
 
     // 获取操作权限
     const isCreate = usePermission(props.pageName, 'create')
-    const isUpdate = usePermission(props.pageName, 'uodate')
+    const isUpdate = usePermission(props.pageName, 'update')
     const isDelete = usePermission(props.pageName, 'delete')
     const isQuery = usePermission(props.pageName, 'query')
 
@@ -94,7 +102,7 @@ export default defineComponent({
       store.getters['systemModule/pageListCount'](props.pageName)
     )
     // 双向绑定pageInfo
-    const pageInfo = ref({ currentPage: 0, pageSize: 10 })
+    const pageInfo = ref({ currentPage: 1, pageSize: 10 })
     watch(pageInfo, () => {
       getPageData()
     })
@@ -104,7 +112,7 @@ export default defineComponent({
       store.dispatch('systemModule/getPageListAction', {
         pageName: props.pageName,
         queryInfo: {
-          offset: pageInfo.value.currentPage * pageInfo.value.pageSize,
+          offset: (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
           size: pageInfo.value.pageSize,
           ...query
         }
@@ -121,7 +129,22 @@ export default defineComponent({
         return true
       }
     )
-
+    // 删除/编辑/新增行数据
+    // 删除
+    const handleDeleteClick = (item: any) => {
+      store.dispatch('systemModule/deletePageDataAction', {
+        pageName: props.pageName,
+        id: item.id
+      })
+    }
+    // 新增
+    const handleNewClick = () => {
+      emit('newBtnClick')
+    }
+    // 编辑
+    const handleEditClick = (item: any) => {
+      emit('editBtnClick', item)
+    }
     return {
       formatTime,
       userList,
@@ -131,7 +154,10 @@ export default defineComponent({
       otherPropsSlots,
       isCreate,
       isUpdate,
-      isDelete
+      isDelete,
+      handleDeleteClick,
+      handleNewClick,
+      handleEditClick
     }
   }
 })

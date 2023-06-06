@@ -50,6 +50,7 @@ export default defineComponent({
     // 优化3: 点击搜索
     const handleQueryClick = () => {
       emit('queryBtnClick', formData.value)
+      console.log('点击搜索')
     }
     return { formData, handleResetClick, handleQueryClick }
   }

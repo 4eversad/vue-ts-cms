@@ -38,6 +38,7 @@ const loginModule: Module<ILoginState, IRootState> = {
       })
       const permissions = mapMenuToPermissions(userMenus)
       state.permissions = permissions
+      console.log(permissions)
     }
   },
   actions: {

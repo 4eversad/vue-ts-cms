@@ -9,6 +9,7 @@ export interface IFormItem {
   options?: any[]
   otherOptions?: any
   itemStyle?: any
+  isHidden?: boolean
 }
 
 export interface IForm {

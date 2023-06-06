@@ -6,3 +6,14 @@ export function getPageListData(url: string, queryInfo: any) {
     data: queryInfo
   })
 }
+
+/**
+ *
+ * @param url
+ *
+ */
+export function deletePageData(url: string) {
+  return ftRequest.delete<IDataType>({
+    url
+  })
+}

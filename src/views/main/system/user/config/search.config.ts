@@ -6,6 +6,12 @@ export const searchFormConfig: IForm = {
   },
   formItems: [
     {
+      field: 'id',
+      label: 'id',
+      placeholder: '请输入id',
+      type: 'input'
+    },
+    {
       field: 'name',
       label: '用户名',
       rules: [],
@@ -13,7 +19,7 @@ export const searchFormConfig: IForm = {
       type: 'input'
     },
     {
-      field: 'realName',
+      field: 'realname',
       label: '真实姓名',
       rules: [],
       placeholder: '请输入真实姓名',
