@@ -13,6 +13,7 @@
       @edit-btn-click="handleEditData"
     ></pageContent>
     <pageModal
+      pageName="users"
       :defaultInfo="defaultInfo"
       ref="pageModalRef"
       :modalConfig="modalConfigRef"
@@ -67,10 +68,6 @@ export default defineComponent({
     }
     const [pageModalRef, handleNewData, handleEditData, defaultInfo] =
       usePageModal(newCallBack, editCallBack) as any
-
-    // 动态添加部门和角色列表
-
-    // 调用hook获取公共变量和函数
 
     return {
       searchFormConfig,

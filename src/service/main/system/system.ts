@@ -17,3 +17,16 @@ export function deletePageData(url: string) {
     url
   })
 }
+// 新增/编辑
+export function createPageData(url: string, newData: any) {
+  return ftRequest.post<IDataType>({
+    url: url,
+    data: newData
+  })
+}
+export function editPageData(url: string, editData: any) {
+  return ftRequest.patch<IDataType>({
+    url: url,
+    data: editData
+  })
+}

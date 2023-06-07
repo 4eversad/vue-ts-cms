@@ -17,7 +17,7 @@ const store = createStore<IRootState>({
       state.entireDepartment = list
     },
     changeEntireRole(state, list) {
-      state.entireDepartment = list
+      state.entireRole = list
     }
   },
   actions: {
@@ -31,6 +31,8 @@ const store = createStore<IRootState>({
         offset: 0,
         size: 100
       })
+      console.log(roleResult)
+
       const { list: roleList } = roleResult.data
       // 保存数据
       commit('changeEntireDepartment', departmentList)
