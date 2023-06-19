@@ -3,12 +3,14 @@ import loginModule from './login/login'
 import { IRootState } from './types'
 import { IStoreType } from './types'
 import systemModule from './main/system/system'
+import dashboardModule from './main/analysis/dashboard'
 import { getPageListData } from '@/service/main/system/system'
 const store = createStore<IRootState>({
   state: () => {
     return {
       entireRole: [],
-      entireDepartment: []
+      entireDepartment: [],
+      entireMenu: []
     }
   },
   getters: {},
@@ -18,6 +20,9 @@ const store = createStore<IRootState>({
     },
     changeEntireRole(state, list) {
       state.entireRole = list
+    },
+    changeEntireMenu(state, list) {
+      state.entireMenu = list
     }
   },
   actions: {
@@ -31,17 +36,19 @@ const store = createStore<IRootState>({
         offset: 0,
         size: 100
       })
-      console.log(roleResult)
-
       const { list: roleList } = roleResult.data
+      const menuResult = await getPageListData('/menu/list', {})
+      const { list: menuList } = menuResult.data
       // 保存数据
       commit('changeEntireDepartment', departmentList)
       commit('changeEntireRole', roleList)
+      commit('changeEntireMenu', menuList)
     }
   },
   modules: {
     loginModule,
-    systemModule
+    systemModule,
+    dashboardModule
   }
 })
 

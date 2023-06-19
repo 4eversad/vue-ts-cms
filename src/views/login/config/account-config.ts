@@ -4,8 +4,8 @@ export const rules = {
   name: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
     {
-      pattern: /^[a-z0-9]{5,10}$/,
-      message: '用户名是5-10位的字母或数字',
+      pattern: /^[a-z0-9]{1,10}$/,
+      message: '用户名是1-10位的字母或数字',
       trigger: 'blur'
     }
   ],
@@ -13,8 +13,8 @@ export const rules = {
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
     {
-      pattern: /^[a-z0-9]{5,}$/,
-      message: '密码必须是大于5位的数字和字母',
+      pattern: /^[a-z0-9]{3,}$/,
+      message: '密码必须是大于3位的数字和字母',
       trigger: 'blur'
     }
   ],

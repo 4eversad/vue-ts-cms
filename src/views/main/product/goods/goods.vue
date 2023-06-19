@@ -6,7 +6,7 @@
           style="width: 60; height: 60px"
           :src="scope.row.imgUrl"
           :preview-src-list="[scope.row.imgUrl]"
-          preview-teleported="true"
+          :preview-teleported="true"
         >
         </el-image>
       </template>

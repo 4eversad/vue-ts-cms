@@ -94,7 +94,6 @@ export default defineComponent({
     const isUpdate = usePermission(props.pageName, 'update')
     const isDelete = usePermission(props.pageName, 'delete')
     const isQuery = usePermission(props.pageName, 'query')
-
     const userList = computed(() =>
       store.getters['systemModule/pageListData'](props.pageName)
     )

@@ -5,3 +5,4 @@ declare module '*.vue' {
   export default component
 }
 // declare let VUE_APP_BASE_URL: string
+declare module '*.json'
